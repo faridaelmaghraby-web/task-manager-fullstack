@@ -60,7 +60,7 @@ export default function AuthPage({ mode, navigate }) {
           {isRegister && (
             <label className="field">
               <span>Name</span>
-              <input value={form.name} onChange={set('name')} autoComplete="name" placeholder="Farida" />
+              <input value={form.name} onChange={set('name')} autoComplete="name" placeholder="Enter your name" />
               {fieldErrors.name && <em>{fieldErrors.name}</em>}
             </label>
           )}

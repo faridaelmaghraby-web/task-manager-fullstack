@@ -2,9 +2,9 @@
 
 A RESTful task management API built with **Node.js, Express, MongoDB (Mongoose)** and **JWT authentication**, documented with **Swagger / OpenAPI 3**.
 
-- **Live API:** [https://task-api-orcin.vercel.app](https://task-api-orcin.vercel.app)
-- **Swagger docs:** [https://task-api-orcin.vercel.app/api-docs](https://task-api-orcin.vercel.app/api-docs)
-- **Postman collection:** [`postman/task-api.postman_collection.json`](postman/task-api.postman_collection.json)
+- **Frontend Live:** (https://task-manager-frontend-cyan-ten.vercel.app)
+- **Back End Live:** (https://task-manager-fullstack-d6pe.vercel.app)
+- **API docs:** ([task-manager-fullstack-d6pe.vercel.app](https://task-manager-fullstack-d6pe.vercel.app/api-docs))
 
 ## Features
 
@@ -42,7 +42,7 @@ postman/                 Postman collection
 
 1. **Clone and install**
    ```bash
-   git clone https://github.com/faridaelmaghraby-web/task-api.git
+   git clone https://github.com/faridaelmaghraby-web/task-manager-fullstack.git
    cd task-api
    npm install
    ```
