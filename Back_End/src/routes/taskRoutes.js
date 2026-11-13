@@ -5,6 +5,8 @@ const { validate, schemas } = require('../middleware/validate');
 
 router.use(protect); // all task routes require a valid JWT
 
+router.get('/stats', ctrl.getStats);
+
 router.route('/')
   .get(validate(schemas.listTasks, 'query'), ctrl.getTasks)
   .post(validate(schemas.createTask), ctrl.createTask);
