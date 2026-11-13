@@ -1,4 +1,5 @@
 const Task = require('../models/Task');
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -14,8 +15,12 @@ exports.createTask = asyncHandler(async (req, res) => {
 });
 
 exports.getTasks = asyncHandler(async (req, res) => {
-  const { status, page, limit, sort } = req.query;
+  const { status, search, page, limit, sort } = req.query;
   const filter = { owner: req.user._id, ...(status && { status }) };
+  if (search) {
+    const pattern = new RegExp(escapeRegex(search), 'i'); // case-insensitive, special characters escaped
+    filter.$or = [{ title: pattern }, { description: pattern }];
+  }
   const [tasks, total] = await Promise.all([
     Task.find(filter).sort(sort).skip((page - 1) * limit).limit(limit),
     Task.countDocuments(filter),
@@ -28,9 +33,24 @@ exports.getTasks = asyncHandler(async (req, res) => {
   });
 });
 
+// Counts per status for the dashboard cards
+exports.getStats = asyncHandler(async (req, res) => {
+  const rows = await Task.aggregate([
+    { $match: { owner: req.user._id } },
+    { $group: { _id: '$status', count: { $sum: 1 } } },
+  ]);
+  const stats = { total: 0, pending: 0, 'in-progress': 0, completed: 0 };
+  rows.forEach((r) => {
+    stats[r._id] = r.count;
+    stats.total += r.count;
+  });
+  res.json({ success: true, data: stats });
+});
+
 exports.getTask = asyncHandler(async (req, res) => {
   res.json({ success: true, data: await findOwned(req.params.id, req.user._id) });
 });
+
 
 exports.updateTask = asyncHandler(async (req, res) => {
   const task = await findOwned(req.params.id, req.user._id);
